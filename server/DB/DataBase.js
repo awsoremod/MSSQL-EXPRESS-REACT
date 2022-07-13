@@ -7,16 +7,16 @@ class DataBase {
 
 	async dropDB(request) {
 		await request.query(`
-			DROP TABLE Shop_Product
-			DROP TABLE Characteristic_Product
-			DROP TABLE Basket_Product
-			DROP TABLE Product
-			DROP TABLE Basket
-			DROP TABLE Shop
-			DROP TABLE Characteristic
-			DROP TABLE Brand
-			DROP TABLE TypeProduct
-			DROP TABLE Unknown_user
+			DROP TABLE IF EXISTS Shop_Product
+			DROP TABLE IF EXISTS Characteristic_Product
+			DROP TABLE IF EXISTS Basket_Product
+			DROP TABLE IF EXISTS Product
+			DROP TABLE IF EXISTS Basket
+			DROP TABLE IF EXISTS Shop
+			DROP TABLE IF EXISTS Characteristic
+			DROP TABLE IF EXISTS Brand
+			DROP TABLE IF EXISTS TypeProduct
+			DROP TABLE IF EXISTS Unknown_user
 			`);
 	}
 

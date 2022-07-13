@@ -15,10 +15,8 @@ controlPool
 		app.use(cors());
 		app.use(express.json());
 
-		const routerTest = new express();
 		const createDB = require('./DB/Main');
-		routerTest.put('/', createDB.main);
-		app.use('/test', routerTest);
+		createDB.main();
 
 		const router = require('./routes/index');
 		app.use('/api', router);

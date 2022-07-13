@@ -32,7 +32,8 @@ class Main {
 			await Trigger.main(request);
 
 			await transaction.commit();
-			return res.json('finish');
+			//return res.json('finish');
+			console.log('finish');
 		});
 	}
 }

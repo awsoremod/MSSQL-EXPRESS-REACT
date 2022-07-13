@@ -1,0 +1,53 @@
+version: "3.9"
+services:
+
+  mssql:
+    container_name: container-mssql
+    build: /database
+    environment:
+      - SA_PASSWORD=123_Test
+      - ACCEPT_EULA=Y
+    volumes:
+      - database-data:/var/opt/mssql
+    networks:
+      - backend
+
+  server:
+    container_name: container-server
+    restart: unless-stopped
+    build: /server
+    depends_on:
+      - mssql
+    environment:
+      # порт 1433. Можно изменить в файлах от microsoft image
+      - DB_HOST=mssql
+    env_file:
+    # протестить. убрать внутри контейнера .env. и наоборот
+      - /server/.env
+    networks:
+      - frontend
+      - backend
+    # expose:
+    #   - 5000
+    # ports:
+    #   - 5000:5000
+
+  client:
+    container_name: container-client
+    # restart: unless-stopped
+    depends_on:
+      - server
+    build: /client
+    environment:
+      - REACT_APP_API_URL=http://server:5000/
+    ports:
+      - "127.0.0.1:3000:80"
+    networks:
+      - frontend
+
+volumes:
+  database-data:
+networks:
+  backend:
+  frontend:
+
