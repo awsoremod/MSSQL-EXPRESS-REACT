@@ -1,5 +1,5 @@
 # Docker-compose
-Между собой могут общаться: mssql и server, server и nginx. Только nginx имеет external port. Nginx возвращает single page application (большой html). При запросах с браузера к api(server) SPA обращается к nginx, nginx в этом случае является прокси сервером между браузером и api, следовательно cors механизм не активируется
+Между собой могут общаться: mssql и server, server и nginx. Только nginx имеет external port. Nginx возвращает single page application (1 .html + 2 .js + 1 .css). При запросах с браузера к api(server) SPA обращается к nginx, nginx в этом случае является прокси сервером между браузером и api, следовательно cors механизм не активируется
 
 ## Используемые images:
 1. mssql: - 1.99 GB
