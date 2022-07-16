@@ -1,2 +1,3 @@
-CREATE DATABASE DemoData;
+CREATE DATABASE DemoData
+COLLATE Cyrillic_General_CI_AS
 GO

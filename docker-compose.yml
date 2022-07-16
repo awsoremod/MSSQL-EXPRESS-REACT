@@ -1,47 +1,50 @@
 version: "3.9"
 services:
 
-  mssql:
+  mssql: # 1
     container_name: container-mssql
     build: /database
     environment:
-      - SA_PASSWORD=123_Test
+      - SA_PASSWORD=123_Test # 2
       - ACCEPT_EULA=Y
+      - MSSQL_PID=Developer
     volumes:
       - database-data:/var/opt/mssql
     networks:
       - backend
+    expose: # просто информация
+      - "1433" # 3
+      - "1431"
+      - "1434"
 
-  server:
+  server: # 4; client/nginx/nginx.conf
     container_name: container-server
     restart: unless-stopped
     build: /server
     depends_on:
-      - mssql
+      - mssql # 1
     environment:
-      # порт 1433. Можно изменить в файлах от microsoft image
-      - DB_HOST=mssql
-    env_file:
-    # протестить. убрать внутри контейнера .env. и наоборот
-      - /server/.env
+      - DB_HOST=mssql # 1
+      - PORT=5000 # client/nginx/nginx.conf
+      - DB_USER=sa
+      - DB_PWD=123_Test # 2
+      - DB_NAME=DemoData # database/setup.sql
+      - DB_PORT=1433 # 3
+      - SECRET_KEY=asdaprivet213asd
     networks:
       - frontend
       - backend
-    # expose:
-    #   - 5000
-    # ports:
-    #   - 5000:5000
 
   client:
     container_name: container-client
-    # restart: unless-stopped
     depends_on:
-      - server
-    build: /client
-    environment:
-      - REACT_APP_API_URL=http://server:5000/
+      - server # 4
+    build:
+      context: /client
+      args:
+        REACT_APP_API_URL: http://localhost:3000/ # 5 external
     ports:
-      - "127.0.0.1:3000:80"
+      - "127.0.0.1:3000:80" # 5 external; 80 - client/nginx/nginx.conf
     networks:
       - frontend
 
